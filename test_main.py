@@ -1,4 +1,3 @@
-import pytest
 import os
 import pandas as pd
 from main import extract, load
@@ -8,17 +7,18 @@ from mylib.query import query
 def test_extract():
     # Call the extract function and check the file is created
     file_path = extract()
-    
+
     assert os.path.exists(file_path), "Extracted file does not exist"
-    
+
     # Check the content of the extracted CSV file
-    with open(file_path, 'r') as f:
+    with open(file_path, "r") as f:
         lines = f.readlines()
-    
+
     # Verify the first few lines of the CSV content
     assert len(lines) > 1, "CSV file is empty or incomplete"
     assert "airline" in lines[0], "CSV header is incorrect"
     assert "Aer Lingus" in lines[1], "First row of CSV is not as expected"
+
 
 # Test for the load function
 def test_load():
@@ -36,6 +36,7 @@ def test_load():
     df2 = pd.read_csv("airline2.csv")
     assert len(df2) > 0, "Data from airline2.csv was not loaded correctly"
 
+
 # Test for the query function
 def test_query():
     # Query the database and verify the results
@@ -46,7 +47,7 @@ def test_query():
 
     for row in results:
         print(row)
-    
+
     # Verify the first few results
     assert results[0][0] == "Air Canada", "First airline is incorrect"
     assert results[0][1] == "North America", "First region is incorrect"

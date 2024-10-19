@@ -1,8 +1,8 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='airline_cli_tool',
-    version='0.1',
+    name="airline_cli_tool",
+    version="0.1",
     packages=find_packages(),
     include_package_data=True,
     install_requires=[
@@ -11,8 +11,8 @@ setup(
         "pandas",
         "python-dotenv",
     ],
-    entry_points='''
+    entry_points="""
         [console_scripts]
         airline_cli=main:cli
-    ''',
+    """,
 )
