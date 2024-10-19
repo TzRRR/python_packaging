@@ -1,30 +1,33 @@
 """
 ETL-Query script
 """
-
+import click
 from mylib.extract import extract
 from mylib.transform_load import load
-from mylib.query import query_complex_airline_data
+from mylib.query import query as run_custom_query
 
-# Extract
-print("Extracting data...")
-extract()
+@click.group()
+def cli():
+    """CLI tool for interacting with airline data."""
+    pass
 
-# Transform and load
-print("Transforming data...")
-load()
+@cli.command()
+def extract_data():
+    """Extract data."""
+    extract()
 
+@cli.command()
+def transform_load_data():
+    """Transform and load the data."""
+    load()
 
-results = query_complex_airline_data()
-for row in results:
-    print(row)
+@cli.command(name="query")
+@click.argument("query_str", nargs=-1)
+def run_query(query_str):
+    """Run a SQL query."""
+    # Join the query arguments into a single string (in case it's split)
+    query = " ".join(query_str)
+    run_custom_query(query)
 
-
-# # Create new entry
-# create("Test Airline", 5000000, 2, 1, 100, 3, 1, 150)
-
-# # Update existing entry
-# update("Test Airline", 5)
-
-# # Delete entry
-# delete("Test Airline")
+if __name__ == '__main__':
+    cli()

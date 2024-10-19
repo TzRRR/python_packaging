@@ -1,0 +1,8 @@
+Metadata-Version: 2.1
+Name: airline_cli_tool
+Version: 0.1
+License-File: LICENSE
+Requires-Dist: click
+Requires-Dist: databricks-sql-connector
+Requires-Dist: pandas
+Requires-Dist: python-dotenv

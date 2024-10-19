@@ -14,7 +14,8 @@ from dotenv import load_dotenv
 
 def load(dataset1="airline.csv", dataset2="airline2.csv"):
     """Transforms and Loads data into the local databricks database"""
-    
+    print("Transforming and loading data...")
+
     # Load data from both CSV files
     df1 = pd.read_csv(dataset1, delimiter=",")
     df2 = pd.read_csv(dataset2, delimiter=",")
@@ -101,28 +102,7 @@ def load(dataset1="airline.csv", dataset2="airline2.csv"):
         print(f"AdditionalAirlineDB size: {additional_airline_db_size} rows")
 
         c.close()
+    
+    print("Data transformation and loading completed.")
 
     return "success"
-
-
-
-#load the csv file and insert into a new sqlite3 database
-# def load(dataset="airline.csv"):
-#     """"Transforms and Loads data into the local SQLite3 database"""
-
-#     #prints the full working directory and path
-#     print(os.getcwd())
-#     payload = csv.reader(open(dataset, newline=''), delimiter=',')
-#     next(payload)
-#     conn = sqlite3.connect('AirlineDB.db')
-#     c = conn.cursor()
-#     c.execute("DROP TABLE IF EXISTS AirlineDB")
-#     c.execute("CREATE TABLE AirlineDB (airline, avail_seat_km_per_week, "
-#               "incidents_85_99, fatal_accidents_85_99, fatalities_85_99, "
-#               "incidents_00_14, fatal_accidents_00_14, fatalities_00_14)")
-#     #insert
-#     c.executemany("INSERT INTO AirlineDB VALUES (?, ?, ?, ?, ?, ?, ?, ?)", payload)
-#     conn.commit()
-#     conn.close()
-#     return "AirlineDB.db"
-

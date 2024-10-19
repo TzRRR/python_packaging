@@ -4,7 +4,7 @@
 
 ## Overview
 
-A Python project for performing a complex SQL query on Databricks database storing airline data.
+A Python project for performing a complex SQL query on Databricks database storing airline data AND create an executable by packaging the project.
 
 ## Installation
 

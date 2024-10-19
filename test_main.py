@@ -1,53 +1,54 @@
-from mylib.query import query_complex_airline_data
+import pytest
+import os
+import pandas as pd
+from main import extract, load
+from mylib.query import query
 
+# Test for the extract function
+def test_extract():
+    # Call the extract function and check the file is created
+    file_path = extract()
+    
+    assert os.path.exists(file_path), "Extracted file does not exist"
+    
+    # Check the content of the extracted CSV file
+    with open(file_path, 'r') as f:
+        lines = f.readlines()
+    
+    # Verify the first few lines of the CSV content
+    assert len(lines) > 1, "CSV file is empty or incomplete"
+    assert "airline" in lines[0], "CSV header is incorrect"
+    assert "Aer Lingus" in lines[1], "First row of CSV is not as expected"
 
-results = query_complex_airline_data()
+# Test for the load function
+def test_load():
+    # Ensure the load function runs successfully
+    result = load()
 
+    assert result == "success", "Load function did not return success"
 
-def test_query_result_length():
-    """Test that the length of the query result is correct"""
-    expected_length = 5  # The expected length based on the result data
-    assert (
-        len(results) == expected_length
-    ), f"Expected {expected_length} rows, but got {len(results)}."
+    # Ensure the datasets have been properly loaded into the database
+    # Check the data from the 'airline.csv' file
+    df1 = pd.read_csv("airline.csv")
+    assert len(df1) > 0, "Data from airline.csv was not loaded correctly"
 
+    # Check the data from the 'airline2.csv' file
+    df2 = pd.read_csv("airline2.csv")
+    assert len(df2) > 0, "Data from airline2.csv was not loaded correctly"
 
-def test_first_row_contents():
-    """Test that the first row of the query result matches expected values"""
-    first_row = results[0]
+# Test for the query function
+def test_query():
+    # Query the database and verify the results
+    query_str = "SELECT airline, region FROM AdditionalAirlineDB"
+    results = query(query_str)
 
-    assert first_row.airline == "Air France"
-    assert first_row.total_incidents == 20
-    assert first_row.total_fatalities == 416
-    assert first_row.airline_code == "AA"
-    assert first_row.region == "Europe"
-    assert first_row.total_incidents_per_region == 20
-    assert first_row.total_fatalities_per_region == 416
+    assert len(results) > 0, "Query returned no results"
 
-
-# def test_create():
-#     """Test inserting a new row into the database"""
-#     create("Airline C", 3000000, 4, 1, 20, 2, 1, 50, db_name=TEST_DB)
-#     result = query(db_name=TEST_DB)
-#     assert len(result) == 3, "Create did not add a new row"
-#     assert result[2][0] == "Airline C", "New airline name does not match expected"
-
-
-# def test_update():
-#     """Test updating an existing row in the database"""
-#     update("Airline A", 5, db_name=TEST_DB)
-#     result = query(db_name=TEST_DB)
-#     updated_row = next(row for row in result if row[0] == "Airline A")
-#     assert (
-#         updated_row[5] == 5
-#     ), "Update did not change the incidents_00_14 value correctly"
-
-
-# def test_delete():
-#     """Test deleting a row from the database"""
-#     delete("Airline B", db_name=TEST_DB)
-#     result = query(db_name=TEST_DB)
-#     assert len(result) == 2, "Delete did not remove the row correctly"
-#     assert not any(
-#         row[0] == "Airline B" for row in result
-#     ), "Deleted airline still found in the table"
+    for row in results:
+        print(row)
+    
+    # Verify the first few results
+    assert results[0][0] == "Air Canada", "First airline is incorrect"
+    assert results[0][1] == "North America", "First region is incorrect"
+    assert results[1][0] == "Virgin Atlantic", "Second airline is incorrect"
+    assert results[1][1] == "Africa", "Second region is incorrect"

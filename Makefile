@@ -2,15 +2,6 @@ install:
 	pip install --upgrade pip &&\
 		pip install -r requirements.txt
 
-query:
-	python main.py
-
-test:
-	python -m pytest -vv --cov=main --cov=mylib test_*.py
-
-format:	
-	black *.py 
-
 lint:
 	#disable comment to test speed
 	#pylint --disable=R,C --ignore-patterns=test_.*?py *.py mylib/*.py
@@ -22,7 +13,19 @@ container-lint:
 
 refactor: format lint
 
-deploy:
-	#deploy goes here
+extract:
+	airline_cli extract
+
+transform_load: 
+	airline_cli transform_load
+
+query:
+	airline_cli query "SELECT * FROM airlineDB1" 
+
+test:
+	python -m pytest -vv --cov=main --cov=mylib test_*.py
+
+format:	
+	black *.py 
 		
 all: install lint test format deploy

@@ -10,4 +10,5 @@ databricks
 python-dotenv
 pandas
 databricks-sql-connector
+click
 
