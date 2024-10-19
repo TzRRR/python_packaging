@@ -14,13 +14,13 @@ container-lint:
 refactor: format lint
 
 extract:
-	airline_cli extract
+	python -c "from main import extract_data; extract_data()"
 
 transform_load: 
-	airline_cli transform_load
+	python -c "from main import transform_load_data; transform_load_data()"
 
 query:
-	airline_cli query "SELECT * FROM airlineDB1" 
+	python -c "from main import run_query; run_query(['SELECT * FROM airlineDB1'])"
 
 test:
 	python -m pytest -vv --cov=main --cov=mylib test_*.py
